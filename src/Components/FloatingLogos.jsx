@@ -25,6 +25,7 @@ export default function FloatingLogos() {
         return (
           <motion.img
             key={i}
+            loading="lazy"
             src={logo}
             alt="app-logo"
             className="absolute blur-[0.5px]"
