@@ -55,9 +55,9 @@ export default function LoginPage() {
         <FloatingLogos />
         <CurvedLines />
 
-        <Card className="relative  w-full sm:max-w-md">
+        <Card className="relative font-kodchasan w-full sm:max-w-md">
           <CardHeader>
-            <CardTitle>Login To Your Dashboard</CardTitle>
+            <CardTitle className="text-xl font-bold">Login To Your Dashboard</CardTitle>
             <CardDescription>Admin & Moderators dashboard</CardDescription>
           </CardHeader>
           <CardContent>
