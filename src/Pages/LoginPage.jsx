@@ -1,5 +1,5 @@
-import FloatingLogos from "../Components/FloatingLogos";
-import CurvedLines from "../Components/CurvedLines";
+import FloatingLogos from "../components/FloatingLogos";
+import CurvedLines from "../components/CurvedLines";
 
 import * as React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";

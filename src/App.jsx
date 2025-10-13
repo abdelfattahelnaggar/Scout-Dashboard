@@ -1,6 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { lazy, Suspense } from "react";
-import SkeletonLoader from "./Components/SkeletonLoader";
+import SkeletonLoader from "./components/SkeletonLoader";
 
 const LoginPage = lazy(() => import("./Pages/LoginPage"));
 const Dashboard = lazy(() => import("./Pages/Dashboard"));
