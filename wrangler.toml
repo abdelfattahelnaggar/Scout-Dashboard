@@ -3,4 +3,6 @@ compatibility_date = "2025-10-13"
 
 [assets]
 directory = "./dist"
+html_handling = "force-html"
+not_found_handling = "single-page-application"
 
