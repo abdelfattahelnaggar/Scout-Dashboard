@@ -1,6 +1,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import SkeletonLoader from "./components/SkeletonLoader";
+import AuthProtectedRoute from "./protectedRoutes/AuthProtectedRoute";
 
 const LoginPage = lazy(() => import("./Pages/LoginPage"));
 const Dashboard = lazy(() => import("./Pages/Dashboard"));
@@ -12,7 +13,9 @@ export default function App() {
       path: "/",
       element: (
         <Suspense fallback={<SkeletonLoader />}>
-          <Dashboard />
+          <AuthProtectedRoute>
+            <Dashboard />
+          </AuthProtectedRoute>
         </Suspense>
       ),
     },
@@ -24,11 +27,14 @@ export default function App() {
         </Suspense>
       ),
     },
-    {path: "*", element: (
-      <Suspense fallback={<SkeletonLoader />}>
-        <NotFoundPage />
-      </Suspense>
-    )},
+    {
+      path: "*",
+      element: (
+        <Suspense fallback={<SkeletonLoader />}>
+          <NotFoundPage />
+        </Suspense>
+      ),
+    },
   ]);
   return <RouterProvider router={router} />;
 }
