@@ -20,8 +20,16 @@ import {
   FieldGroup,
   FieldLabel,
 } from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+} from "@/components/ui/input-group";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 import { formSchema } from "../Schemas/loginScheme";
+import { Helmet } from "react-helmet";
+import { Lock, Mail } from "lucide-react";
 
 export default function LoginPage() {
   const form = useForm({
@@ -51,69 +59,111 @@ export default function LoginPage() {
 
   return (
     <div>
-      <div className="relative w-full h-dvh bg-black text-white flex items-center justify-center overflow-hidden">
+      <Helmet>
+        <title>Login | Scout Dashboard</title>
+        <meta
+          name="description"
+          content="Login to your dashboard to manage your scout website."
+        />
+        <meta
+          name="keywords"
+          content="scout, dashboard, login, admin, moderator"
+        />
+        <meta name="apple-mobile-web-app-title" content="Scout Dashboard" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+      </Helmet>
+      <div className="relative w-full h-dvh flex items-center justify-center overflow-hidden">
         <FloatingLogos />
         <CurvedLines />
 
-        <Card className="relative font-kodchasan w-full sm:max-w-md">
-          <CardHeader>
-            <CardTitle className="text-xl font-bold">Login To Your Dashboard</CardTitle>
+        <Card className="relative font-kodchasan bg-transparent shadow-none border-none w-full sm:max-w-md">
+          <CardHeader className="text-center">
+            <CardTitle className="text-xl font-bold">
+              Login To Your Dashboard
+            </CardTitle>
             <CardDescription>Admin & Moderators dashboard</CardDescription>
           </CardHeader>
           <CardContent>
-            <form id="login-form" onSubmit={form.handleSubmit(onSubmit)}>
+            <form
+              id="login-form"
+              onSubmit={form.handleSubmit(onSubmit)}
+              autoComplete="off"
+            >
               <FieldGroup>
+                {/* Email Input */}
                 <Controller
                   name="email"
                   control={form.control}
                   render={({ field, fieldState }) => (
                     <Field data-invalid={fieldState.invalid}>
-                      <FieldLabel htmlFor="login-email">
-                        Email
-                      </FieldLabel>
-                      <Input
-                        {...field}
-                        id="login-email"
-                        type="email"
-                        aria-invalid={fieldState.invalid}
-                        placeholder="Email"
-                        autoComplete="email"
-                      />
+                      <FieldLabel htmlFor="login-email">Email</FieldLabel>
+                      <InputGroup>
+                        <InputGroupAddon>
+                          <Mail />
+                        </InputGroupAddon>
+                        <InputGroupInput
+                          {...field}
+                          id="login-email"
+                          type="email"
+                          aria-invalid={fieldState.invalid}
+                          placeholder="Enter your email"
+                          autoComplete="off"
+                        />
+                      </InputGroup>
                       {fieldState.invalid && (
                         <FieldError errors={[fieldState.error]} />
                       )}
                     </Field>
                   )}
                 />
+                {/* Password Input */}
                 <Controller
                   name="password"
                   control={form.control}
                   render={({ field, fieldState }) => (
                     <Field data-invalid={fieldState.invalid}>
-                      <FieldLabel htmlFor="login-password">
-                        Password
-                      </FieldLabel>
-                      <Input
-                        {...field}
-                        id="login-password"
-                        type="password"
-                        placeholder="Password"
-                        aria-invalid={fieldState.invalid}
-                        autoComplete="current-password"
-                      />
+                      <FieldLabel htmlFor="login-password">Password</FieldLabel>
+                      <InputGroup>
+                        <InputGroupAddon>
+                          <Lock className="w-5 h-5" />
+                        </InputGroupAddon>
+                        <InputGroupInput
+                          {...field}
+                          id="login-password"
+                          type="password"
+                          placeholder="Enter your password"
+                          aria-invalid={fieldState.invalid}
+                          autoComplete="off"
+                        />
+                      </InputGroup>
                       {fieldState.invalid && (
                         <FieldError errors={[fieldState.error]} />
                       )}
                     </Field>
                   )}
                 />
+
+                {/* Remember Me Checkbox */}
+                <Field orientation="horizontal" className="items-center">
+                  <Checkbox 
+                    id="remember" 
+                    className="data-[state=checked]:bg-[#BDFF19] data-[state=checked]:border-[#BDFF19] data-[state=checked]:text-gray-50" 
+                  />
+                  <Label htmlFor="remember" className="text-sm  cursor-pointer">
+                    Remember me
+                  </Label>
+                </Field>
               </FieldGroup>
             </form>
           </CardContent>
           <CardFooter>
             <Field orientation="horizontal">
-              <Button type="submit" className="bg-[#BDFF19] w-full" form="login-form">
-                Login
+              <Button
+                type="submit"
+                className="bg-[#BDFF19] hover:bg-[#BDFF19]/85 text-sm text-gray-50 w-full"
+                form="login-form"
+              >
+                Get Started
               </Button>
             </Field>
           </CardFooter>
