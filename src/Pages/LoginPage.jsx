@@ -51,7 +51,7 @@ export default function LoginPage() {
 
   return (
     <div>
-      <div className="relative w-full h-screen bg-black text-white flex items-center justify-center overflow-hidden">
+      <div className="relative w-full h-dvh bg-black text-white flex items-center justify-center overflow-hidden">
         <FloatingLogos />
         <CurvedLines />
 
