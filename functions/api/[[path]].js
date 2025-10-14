@@ -15,11 +15,8 @@ export async function onRequest(context) {
     });
   }
   
-  // Extract the path after /api/
-  const apiPath = url.pathname.replace('/api/', '');
-  
-  // Build the target URL
-  const targetUrl = `https://socialist-ammamaria-scout-api-43c6c249.koyeb.app/api/${apiPath}${url.search}`;
+  // Build the target URL - keep the full path including /api
+  const targetUrl = `https://socialist-ammamaria-scout-api-43c6c249.koyeb.app${url.pathname}${url.search}`;
   
   // Create headers for the proxied request
   const headers = new Headers(request.headers);
