@@ -1,10 +1,9 @@
 import axios from "axios";
 
 export async function loginApi(userData) {
-  const API = import.meta.env.VITE_BASE_URL;
   
   try {
-    const response = await axios.post(`${API}/api/auth/login`, userData, {
+    const response = await axios.post(`/api/auth/login`, userData, {
       headers: {
         "Content-Type": "application/json",
       },
