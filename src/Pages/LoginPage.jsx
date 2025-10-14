@@ -84,7 +84,8 @@ export default function LoginPage() {
           return `Welcome back, ${response?.data?.userDetails?.fullName || "my friend"}!`;
         },
         error: (error) => {
-          // !============== Handle different error scenarios ============== 
+          // Handle different error scenarios
+          console.error("Login API Error:", error.response); // Log the full error response
           const message = error?.response?.data?.message || 
                          error?.message || 
                          "Login failed. Please try again.";
