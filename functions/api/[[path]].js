@@ -1,53 +1,54 @@
-// Cloudflare Pages Function to proxy API requests and handle CORS
-export async function onRequest(context) {
+// functions/api/[[path]].js
+
+const API_URL = 'https://socialist-ammamaria-scout-api-43c6c249.koyeb.app';
+
+async function handleRequest(context) {
   const { request } = context;
   const url = new URL(request.url);
-  
-  // Handle preflight OPTIONS request
-  if (request.method === 'OPTIONS') {
+
+  // Construct the target API URL, preserving the path and query string.
+  const apiUrl = new URL(API_URL + url.pathname + url.search);
+
+  // Create a new request to the target API, forwarding the original method, headers, and body.
+  const apiRequest = new Request(apiUrl.toString(), {
+    method: request.method,
+    headers: request.headers,
+    body: request.body,
+    redirect: 'follow',
+  });
+
+  // Fetch the response from the target API.
+  const response = await fetch(apiRequest);
+
+  // Create a mutable copy of the response to add CORS headers for the browser.
+  const newResponse = new Response(response.body, response);
+  newResponse.headers.set('Access-Control-Allow-Origin', '*'); // Allow any origin
+  newResponse.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
+  newResponse.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+
+  return newResponse;
+}
+
+function handleOptions(request) {
+    // Handle CORS pre-flight requests by returning the appropriate CORS headers.
     return new Response(null, {
       headers: {
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-        'Access-Control-Max-Age': '86400',
+        // Reflect the headers requested by the client in the pre-flight request.
+        'Access-Control-Allow-Headers': request.headers.get('Access-Control-Request-Headers') || 'Content-Type, Authorization',
+        'Access-Control-Max-Age': '86400', // Cache pre-flight response for 24 hours.
       },
     });
+}
+
+export async function onRequest(context) {
+  const { request } = context;
+  // Route OPTIONS requests to the pre-flight handler.
+  if (request.method === 'OPTIONS') {
+    return handleOptions(request);
   }
-  
-  // Build the target URL - keep the full path including /api
-  const targetUrl = `https://socialist-ammamaria-scout-api-43c6c249.koyeb.app${url.pathname}${url.search}`;
-  
-  // Create headers for the proxied request
-  const headers = new Headers(request.headers);
-  headers.set('Origin', 'https://socialist-ammamaria-scout-api-43c6c249.koyeb.app');
-  
-  // Create a new request with the same method, headers, and body
-  const apiRequest = new Request(targetUrl, {
-    method: request.method,
-    headers: headers,
-    body: request.method !== 'GET' && request.method !== 'HEAD' ? await request.clone().arrayBuffer() : null,
-  });
-  
-  try {
-    // Forward the request to the API
-    const response = await fetch(apiRequest);
-    
-    // Clone the response and add CORS headers
-    const newResponse = new Response(response.body, response);
-    newResponse.headers.set('Access-Control-Allow-Origin', '*');
-    newResponse.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
-    newResponse.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    
-    return newResponse;
-  } catch (error) {
-    return new Response(JSON.stringify({ error: 'Proxy error', message: error.message }), {
-      status: 500,
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
-      },
-    });
-  }
+  // Route all other requests to the main proxy handler.
+  return handleRequest(context);
 }
 
