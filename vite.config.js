@@ -11,7 +11,14 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
-  server:{
-    open: true
+  server: {
+    open: true,
+    proxy: {
+      '/api': {
+        target: 'https://socialist-ammamaria-scout-api-43c6c249.koyeb.app',
+        changeOrigin: true,
+        secure: false,
+      }
+    }
   }
 })

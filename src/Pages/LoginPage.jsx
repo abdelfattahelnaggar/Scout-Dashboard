@@ -28,50 +28,74 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { formSchema } from "../Schemas/loginScheme";
-import { Helmet } from "react-helmet";
+import { useDocumentHead } from "../hooks/useDocumentHead";
 import { Lock, Mail } from "lucide-react";
 import DarkModeToggle from "../components/DarkModeToggle";
+import { useMutation } from "@tanstack/react-query";
+import { loginApi } from "../services/authServices";
+import { useNavigate } from "react-router-dom";
 
 export default function LoginPage() {
+  const navigate = useNavigate();
+
+  const { mutateAsync, isPending } = useMutation({
+    mutationFn: loginApi,
+  });
+
+  // !============== Set document head ============== 
+  useDocumentHead({
+    title: "Login | Scout Dashboard",
+    description: "Login to your dashboard to manage your scout website.",
+    keywords: "scout, dashboard, login, admin, moderator",
+    meta: {
+      "apple-mobile-web-app-title": "Scout Dashboard",
+      "apple-mobile-web-app-capable": "yes",
+    },
+  });
+
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: "",
+      identifier: "",
       password: "",
     },
   });
 
   function onSubmit(data) {
-    () => {
-      toast.promise(
-        () =>
-          new Promise((resolve) =>
-            setTimeout(() => resolve({ name: "Event" }), 2000)
-          ),
-        {
-          loading: "Loading...",
-          success: () => `${data.email} has been created`,
-          error: "Error",
-        }
-      );
-    };
+    toast.promise(
+      mutateAsync(data),
+      {
+        loading: "Logging in...",
+        success: (response) => {
+          // !============== Store token in localStorage ============== 
+          if (response?.data?.token) {
+            localStorage.setItem("token", response.data.token);
+          }
+          // !============== Store user data if available ============== 
+          if (response?.data?.userDetails) {
+            localStorage.setItem("user", JSON.stringify(response.data.userDetails));
+          }
+          
+          // !============== Navigate to dashboard after successful login ============== 
+          setTimeout(() => {
+            navigate("/");
+          }, 1000);
+          
+          return `Welcome back, ${response?.data?.userDetails?.fullName || "my friend"}!`;
+        },
+        error: (error) => {
+          // !============== Handle different error scenarios ============== 
+          const message = error?.response?.data?.message || 
+                         error?.message || 
+                         "Login failed. Please try again.";
+          return message;
+        },
+      }
+    );
   }
 
   return (
     <>
-      <Helmet>
-        <title>Login | Scout Dashboard</title>
-        <meta
-          name="description"
-          content="Login to your dashboard to manage your scout website."
-        />
-        <meta
-          name="keywords"
-          content="scout, dashboard, login, admin, moderator"
-        />
-        <meta name="apple-mobile-web-app-title" content="Scout Dashboard" />
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-      </Helmet>
       <div className="relative w-full h-dvh flex items-center justify-center overflow-hidden ">
         <FloatingLogos />
         <CurvedLines />
@@ -93,9 +117,9 @@ export default function LoginPage() {
               >
                 <FieldGroup className="flex flex-col gap-3">
                   <section className="flex flex-col gap-6">
-                    {/* Email Input */}
+                    {/* !============== Email Input ============== */}
                     <Controller
-                      name="email"
+                      name="identifier"
                       control={form.control}
                       render={({ field, fieldState }) => (
                         <Field
@@ -177,10 +201,11 @@ export default function LoginPage() {
               <Field orientation="horizontal">
                 <Button
                   type="submit"
-                  className="bg-primary-button cursor-pointer text-sm h-14 rounded-2xl dark:bg-primary-button-dark  hover:bg-primary-button/85 dark:hover:bg-primary-button-dark/85 text-sm text-primary-text w-full"
+                  className="bg-primary-button cursor-pointer text-sm h-14 rounded-2xl dark:bg-primary-button-dark  hover:bg-primary-button/85 dark:hover:bg-primary-button-dark/85 text-primary-text w-full"
                   form="login-form"
+                  disabled={isPending}
                 >
-                  Get Started
+                  {isPending ? "Loading..." : "Get Started"}
                 </Button>
               </Field>
             </CardFooter>
