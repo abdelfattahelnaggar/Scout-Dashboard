@@ -3,6 +3,10 @@
     {
       "source": "/api/:path*",
       "destination": "https://socialist-ammamaria-scout-api-43c6c249.koyeb.app/api/:path*"
+    },
+    {
+      "source": "/((?!api/).*)",
+      "destination": "/index.html"
     }
   ]
 }
