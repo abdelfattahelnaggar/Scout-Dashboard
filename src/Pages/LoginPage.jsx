@@ -30,6 +30,7 @@ import { Label } from "@/components/ui/label";
 import { formSchema } from "../Schemas/loginScheme";
 import { Helmet } from "react-helmet";
 import { Lock, Mail } from "lucide-react";
+import DarkModeToggle from "../components/DarkModeToggle";
 
 export default function LoginPage() {
   const form = useForm({
@@ -58,7 +59,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div>
+    <>
       <Helmet>
         <title>Login | Scout Dashboard</title>
         <meta
@@ -72,103 +73,124 @@ export default function LoginPage() {
         <meta name="apple-mobile-web-app-title" content="Scout Dashboard" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
       </Helmet>
-      <div className="relative w-full h-dvh flex items-center justify-center overflow-hidden">
+      <div className="relative w-full h-dvh flex items-center justify-center overflow-hidden ">
         <FloatingLogos />
         <CurvedLines />
-
-        <Card className="relative font-kodchasan bg-transparent shadow-none border-none w-full sm:max-w-md">
-          <CardHeader className="text-center">
-            <CardTitle className="text-xl font-bold">
-              Login To Your Dashboard
-            </CardTitle>
-            <CardDescription>Admin & Moderators dashboard</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <form
-              id="login-form"
-              onSubmit={form.handleSubmit(onSubmit)}
-              autoComplete="off"
-            >
-              <FieldGroup>
-                {/* Email Input */}
-                <Controller
-                  name="email"
-                  control={form.control}
-                  render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid}>
-                      <FieldLabel htmlFor="login-email">Email</FieldLabel>
-                      <InputGroup>
-                        <InputGroupAddon>
-                          <Mail />
-                        </InputGroupAddon>
-                        <InputGroupInput
-                          {...field}
-                          id="login-email"
-                          type="email"
-                          aria-invalid={fieldState.invalid}
-                          placeholder="Enter your email"
-                          autoComplete="off"
-                        />
-                      </InputGroup>
-                      {fieldState.invalid && (
-                        <FieldError errors={[fieldState.error]} />
-                      )}
-                    </Field>
-                  )}
-                />
-                {/* Password Input */}
-                <Controller
-                  name="password"
-                  control={form.control}
-                  render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid}>
-                      <FieldLabel htmlFor="login-password">Password</FieldLabel>
-                      <InputGroup>
-                        <InputGroupAddon>
-                          <Lock className="w-5 h-5" />
-                        </InputGroupAddon>
-                        <InputGroupInput
-                          {...field}
-                          id="login-password"
-                          type="password"
-                          placeholder="Enter your password"
-                          aria-invalid={fieldState.invalid}
-                          autoComplete="off"
-                        />
-                      </InputGroup>
-                      {fieldState.invalid && (
-                        <FieldError errors={[fieldState.error]} />
-                      )}
-                    </Field>
-                  )}
-                />
-
-                {/* Remember Me Checkbox */}
-                <Field orientation="horizontal" className="items-center">
-                  <Checkbox 
-                    id="remember" 
-                    className="data-[state=checked]:bg-[#BDFF19] data-[state=checked]:border-[#BDFF19] data-[state=checked]:text-gray-50" 
-                  />
-                  <Label htmlFor="remember" className="text-sm  cursor-pointer">
-                    Remember me
-                  </Label>
-                </Field>
-              </FieldGroup>
-            </form>
-          </CardContent>
-          <CardFooter>
-            <Field orientation="horizontal">
-              <Button
-                type="submit"
-                className="bg-[#BDFF19] hover:bg-[#BDFF19]/85 text-sm text-gray-50 w-full"
-                form="login-form"
+        <div className=" h-fit flex flex-col items-center justify-center w-11/12 sm:w-full max-w-xl text-primary-text dark:text-primary-text-dark ">
+          <Card className="relative font-kodchasan bg-transparent shadow-none border-none w-full sm:max-w-md mb-0">
+            <CardHeader className="text-center">
+              <CardTitle className="text-3xl font-bold">
+                Login To Your Dashboard
+              </CardTitle>
+              <CardDescription className="text-lg font-light">
+                Admin & Moderators dashboard
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <form
+                id="login-form"
+                onSubmit={form.handleSubmit(onSubmit)}
+                autoComplete="off"
               >
-                Get Started
-              </Button>
-            </Field>
-          </CardFooter>
-        </Card>
+                <FieldGroup className="flex flex-col gap-3" >
+                  <section className="flex flex-col gap-6">
+                    {/* Email Input */}
+                    <Controller
+                      name="email"
+                      control={form.control}
+                      render={({ field, fieldState }) => (
+                        <Field
+                          data-invalid={fieldState.invalid}
+                          className="flex flex-col gap-2"
+                        >
+                          <FieldLabel htmlFor="login-email">Email</FieldLabel>
+                          <InputGroup className="dark:bg-input-color-dark bg-input-color h-12 border-none rounded-2xl">
+                            <InputGroupAddon className="me-0.5">
+                              <Mail />
+                            </InputGroupAddon>
+                            <InputGroupInput
+                              {...field}
+                              id="login-email"
+                              type="email"
+                              aria-invalid={fieldState.invalid}
+                              placeholder="Enter your email"
+                              autoComplete="off"
+                            />
+                          </InputGroup>
+                          {fieldState.invalid && (
+                            <FieldError errors={[fieldState.error]} />
+                          )}
+                        </Field>
+                      )}
+                    />
+                    {/* Password Input */}
+                    <Controller
+                      name="password"
+                      control={form.control}
+                      render={({ field, fieldState }) => (
+                        <Field
+                          data-invalid={fieldState.invalid}
+                          className="flex flex-col gap-2"
+                        >
+                          <FieldLabel htmlFor="login-password">
+                            Password
+                          </FieldLabel>
+                          <InputGroup className="dark:bg-input-color-dark bg-input-color h-12 border-none rounded-2xl">
+                            <InputGroupAddon className="me-0.5">
+                              <Lock />
+                            </InputGroupAddon>
+                            <InputGroupInput
+                              {...field}
+                              id="login-password"
+                              type="password"
+                              placeholder="Enter your password"
+                              aria-invalid={fieldState.invalid}
+                              autoComplete="off"
+                            />
+                          </InputGroup>
+                          {fieldState.invalid && (
+                            <FieldError errors={[fieldState.error]} />
+                          )}
+                        </Field>
+                      )}
+                    />
+                  </section>
+                  {/* Remember Me Checkbox */}
+                  <Field
+                    orientation="horizontal"
+                    className="items-center gap-2 flex"
+                  >
+                    <Checkbox
+                      id="remember"
+                      className="rounded-sm transition-all duration-initial data-[state=unchecked]:border-gray-500 data-[state=checked]:bg-primary-button data-[state=checked]:border-primary-button dark:data-[state=checked]:bg-primary-button-dark dark:data-[state=checked]:border-primary-button-dark "
+                    />
+                    <Label
+                      htmlFor="remember"
+                      className="text-sm font-bold cursor-pointer"
+                    >
+                      Remember me later
+                    </Label>
+                  </Field>
+                </FieldGroup>
+              </form>
+            </CardContent>
+            <CardFooter>
+              <Field orientation="horizontal">
+                <Button
+                  type="submit"
+                  className="bg-primary-button dark:bg-primary-button-dark  hover:bg-primary-button/85 dark:hover:bg-primary-button-dark/85 text-sm text-primary-text w-full"
+                  form="login-form"
+                >
+                  Get Started
+                </Button>
+              </Field>
+            </CardFooter>
+          </Card>
+          <section className="toggle-container flex items-center w-full justify-around my-2">
+            <DarkModeToggle />
+          </section>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

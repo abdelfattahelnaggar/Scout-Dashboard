@@ -1,12 +1,22 @@
 @import url("https://fonts.googleapis.com/css2?family=Kodchasan:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400;1,500;1,600;1,700&display=swap");
 @import "tailwindcss";
 
-@theme{
+@theme {
   --font-kodchasan: "Kodchasan", sans-serif;
+  --color-primary-text: #2d2d2d;
+  --color-primary-text-dark: #eaeaea;
+  --color-primary-button: #383838;
+  --color-primary-button-dark: #313131;
+  --color-input-color: #e1e1e1;
+  --color-input-color-dark: #191919;
+  --color-primary-button: #b6ea51;
+  --color-primary-button-dark: #bdff19;
 }
 
 @custom-variant dark (&:is(.dark *));
-
+* {
+  @apply transition-colors duration-200 ease-in-out;
+}
 @layer utilities {
   .bg-gradient-radial {
     background: radial-gradient(circle at 50% 30%, #3b82f6, #a855f7, #ec4899);
