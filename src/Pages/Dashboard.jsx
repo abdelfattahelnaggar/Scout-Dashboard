@@ -3,7 +3,18 @@ import { useNavigate } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import DarkModeToggle from "../components/DarkModeToggle";
+import { useDocumentHead } from "../hooks/useDocumentHead";
+
 export default function Dashboard() {
+  useDocumentHead({
+    title: "Dashboard | Scout Dashboard",
+    description: "Dashboard to manage your scout website.",
+    keywords: "scout, dashboard, admin, moderator",
+    meta: {
+      "apple-mobile-web-app-title": "Scout Dashboard",
+      "apple-mobile-web-app-capable": "yes",
+    },
+  });
   function logout() {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
