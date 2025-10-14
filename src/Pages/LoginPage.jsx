@@ -42,20 +42,19 @@ export default function LoginPage() {
   });
 
   function onSubmit(data) {
-    toast("You submitted the following values:", {
-      description: (
-        <pre className="bg-code text-code-foreground mt-2 w-[320px] overflow-x-auto rounded-md p-4">
-          <code>{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-      position: "bottom-right",
-      classNames: {
-        content: "flex flex-col gap-2",
-      },
-      style: {
-        "--border-radius": "calc(var(--radius) + 4px)",
-      },
-    });
+    () => {
+      toast.promise(
+        () =>
+          new Promise((resolve) =>
+            setTimeout(() => resolve({ name: "Event" }), 2000)
+          ),
+        {
+          loading: "Loading...",
+          success: () => `${data.email} has been created`,
+          error: "Error",
+        }
+      );
+    };
   }
 
   return (
@@ -92,7 +91,7 @@ export default function LoginPage() {
                 onSubmit={form.handleSubmit(onSubmit)}
                 autoComplete="off"
               >
-                <FieldGroup className="flex flex-col gap-3" >
+                <FieldGroup className="flex flex-col gap-3">
                   <section className="flex flex-col gap-6">
                     {/* Email Input */}
                     <Controller
@@ -166,7 +165,7 @@ export default function LoginPage() {
                     />
                     <Label
                       htmlFor="remember"
-                      className="text-sm font-bold cursor-pointer"
+                      className="text-sm cursor-pointer"
                     >
                       Remember me later
                     </Label>
@@ -178,7 +177,7 @@ export default function LoginPage() {
               <Field orientation="horizontal">
                 <Button
                   type="submit"
-                  className="bg-primary-button dark:bg-primary-button-dark  hover:bg-primary-button/85 dark:hover:bg-primary-button-dark/85 text-sm text-primary-text w-full"
+                  className="bg-primary-button cursor-pointer text-sm h-14 rounded-2xl dark:bg-primary-button-dark  hover:bg-primary-button/85 dark:hover:bg-primary-button-dark/85 text-sm text-primary-text w-full"
                   form="login-form"
                 >
                   Get Started
