@@ -17,12 +17,19 @@ function Avatar({
 
 function AvatarImage({
   className,
+  width = 16,
+  height = 16,
   ...props
 }) {
   return (
     <AvatarPrimitive.Image
       data-slot="avatar-image"
       className={cn("aspect-square size-full", className)}
+      width={width}
+      height={height}
+      loading="lazy"
+      decoding="async"
+      fetchPriority="low"
       {...props} />
   );
 }
