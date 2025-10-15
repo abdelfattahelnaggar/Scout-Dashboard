@@ -1,0 +1,23 @@
+{
+  "Dashboard": "Dashboard",
+  "Logout": "Logout",
+  "Welcome": "Welcome",
+  "Language": "Language",
+  "Change Language": "Change Language",
+  "LoginTitle": "Login To Your Dashboard",
+  "LoginDescription": "Admin & Moderators dashboard", 
+  "Theme": "Theme",
+  "Login": "Login",
+  "ScoutDashboard": "Scout Dashboard",
+  "LoginFailed": "Login failed. Please try again.",
+  "LoginAPIError": "Login API Error:",
+  "WelcomeBack": "Welcome back",
+  "MyFriend": "my friend",
+  "LoggingIn": "Logging in...",
+  "RememberMeLater": "Remember me later",
+  "EnterYourEmail": "Enter your email",
+  "EnterYourPassword": "Enter your password",
+  "Email": "Email",
+  "Password": "Password",
+  "GetStarted": "Get Started"
+}

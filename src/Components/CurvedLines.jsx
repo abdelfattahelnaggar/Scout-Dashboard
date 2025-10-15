@@ -1,7 +1,7 @@
 export default function CurvedLines() {
     return (
       <svg
-        className="absolute bottom-0 w-full opacity-60"
+        className="absolute bottom-0 w-full opacity-60 pointer-events-none"
         viewBox="0 0 1440 320"
       >
         <path

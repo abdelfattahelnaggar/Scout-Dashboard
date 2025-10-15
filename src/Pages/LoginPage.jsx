@@ -34,21 +34,23 @@ import DarkModeToggle from "../components/DarkModeToggle";
 import { useMutation } from "@tanstack/react-query";
 import { loginApi } from "../services/authServices";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import LanguageButton from "../components/LanguageButton";
 
 export default function LoginPage() {
   const navigate = useNavigate();
-
+  const { t, i18n } = useTranslation();
   const { mutateAsync, isPending } = useMutation({
     mutationFn: loginApi,
   });
 
-  // !============== Set document head ============== 
+  // !============== Set document head ==============
   useDocumentHead({
-    title: "Login | Scout Dashboard",
-    description: "Login to your dashboard to manage your scout website.",
+    title: `${t("Login")} | Scout Dashboard`,
+    description: t("LoginDescription"),
     keywords: "scout, dashboard, login, admin, moderator",
     meta: {
-      "apple-mobile-web-app-title": "Scout Dashboard",
+      "apple-mobile-web-app-title": t("ScoutDashboard"),
       "apple-mobile-web-app-capable": "yes",
     },
   });
@@ -62,37 +64,38 @@ export default function LoginPage() {
   });
 
   function onSubmit(data) {
-    toast.promise(
-      mutateAsync(data),
-      {
-        loading: "Logging in...",
-        success: (response) => {
-          // !============== Store token in localStorage ============== 
-          if (response?.data?.token) {
-            localStorage.setItem("token", response.data.token);
-          }
-          // !============== Store user data if available ============== 
-          if (response?.data?.userDetails) {
-            localStorage.setItem("user", JSON.stringify(response.data.userDetails));
-          }
-          
-          // !============== Navigate to dashboard after successful login ============== 
-          setTimeout(() => {
-            navigate("/");
-          }, 1000);
-          
-          return `Welcome back, ${response?.data?.userDetails?.fullName || "my friend"}!`;
-        },
-        error: (error) => {
-          // Handle different error scenarios
-          console.error("Login API Error:", error.response); // Log the full error response
-          const message = error?.response?.data?.message || 
-                         error?.message || 
-                         "Login failed. Please try again.";
-          return message;
-        },
-      }
-    );
+    toast.promise(mutateAsync(data), {
+      loading: t("LoggingIn"),
+      success: (response) => {
+        // !============== Store token in localStorage ==============
+        if (response?.data?.token) {
+          localStorage.setItem("token", response.data.token);
+        }
+        // !============== Store user data if available ==============
+        if (response?.data?.userDetails) {
+          localStorage.setItem(
+            "user",
+            JSON.stringify(response.data.userDetails)
+          );
+        }
+
+        // !============== Navigate to dashboard after successful login ==============
+        setTimeout(() => {
+          navigate("/");
+        }, 1000);
+
+        return `${t("WelcomeBack")}, ${
+          response?.data?.userDetails?.fullName || t("MyFriend")
+        }!`;
+      },
+      error: (error) => {
+        // Handle different error scenarios
+        console.error(t("LoginAPIError"), error.response); // Log the full error response
+        const message =
+          error?.response?.data?.message || error?.message || t("LoginFailed");
+        return message;
+      },
+    });
   }
 
   return (
@@ -104,10 +107,10 @@ export default function LoginPage() {
           <Card className="relative font-kodchasan bg-transparent shadow-none border-none w-full sm:max-w-md mb-0">
             <CardHeader className="text-center">
               <CardTitle className="text-3xl font-bold">
-                Login To Your Dashboard
+                {t("LoginTitle")}
               </CardTitle>
               <CardDescription className="text-lg font-light">
-                Admin & Moderators dashboard
+                {t("LoginDescription")}
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -127,9 +130,15 @@ export default function LoginPage() {
                           data-invalid={fieldState.invalid}
                           className="flex flex-col gap-2"
                         >
-                          <FieldLabel htmlFor="login-email">Email</FieldLabel>
+                          <FieldLabel htmlFor="login-email">
+                            {t("Email")}
+                          </FieldLabel>
                           <InputGroup className="dark:bg-input-color-dark bg-input-color h-12 border-none rounded-2xl">
-                            <InputGroupAddon className="me-0.5">
+                            <InputGroupAddon
+                              className={`${
+                                i18n.language === "ar" ? "ms-2" : "me-0.5"
+                              }`}
+                            >
                               <Mail />
                             </InputGroupAddon>
                             <InputGroupInput
@@ -137,8 +146,11 @@ export default function LoginPage() {
                               id="login-email"
                               type="email"
                               aria-invalid={fieldState.invalid}
-                              placeholder="Enter your email"
+                              placeholder={t("EnterYourEmail")}
                               autoComplete="off"
+                              className={`${
+                                i18n.language === "ar" ? "pr-0" : "pl-2"
+                              }`}
                             />
                           </InputGroup>
                           {fieldState.invalid && (
@@ -157,19 +169,26 @@ export default function LoginPage() {
                           className="flex flex-col gap-2"
                         >
                           <FieldLabel htmlFor="login-password">
-                            Password
+                            {t("Password")}
                           </FieldLabel>
                           <InputGroup className="dark:bg-input-color-dark bg-input-color h-12 border-none rounded-2xl">
-                            <InputGroupAddon className="me-0.5">
+                            <InputGroupAddon
+                              className={`${
+                                i18n.language === "ar" ? "ms-2" : "me-0.5"
+                              }`}
+                            >
                               <Lock />
                             </InputGroupAddon>
                             <InputGroupInput
                               {...field}
                               id="login-password"
                               type="password"
-                              placeholder="Enter your password"
+                              placeholder={t("EnterYourPassword")}
                               aria-invalid={fieldState.invalid}
                               autoComplete="off"
+                              className={`${
+                                i18n.language === "ar" ? "pr-0" : "pl-2"
+                              }`}
                             />
                           </InputGroup>
                           {fieldState.invalid && (
@@ -192,7 +211,7 @@ export default function LoginPage() {
                       htmlFor="remember"
                       className="text-sm cursor-pointer"
                     >
-                      Remember me later
+                      {t("RememberMeLater")}
                     </Label>
                   </Field>
                 </FieldGroup>
@@ -206,13 +225,14 @@ export default function LoginPage() {
                   form="login-form"
                   disabled={isPending}
                 >
-                  {isPending ? "Loading..." : "Get Started"}
+                  {isPending ? t("Loading") : t("GetStarted")}
                 </Button>
               </Field>
             </CardFooter>
           </Card>
           <section className="toggle-container flex items-center w-full justify-around my-2">
             <DarkModeToggle />
+            <LanguageButton />
           </section>
         </div>
       </div>

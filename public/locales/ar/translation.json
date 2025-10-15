@@ -1,0 +1,23 @@
+{
+    "Dashboard": "لوحة التحكم",
+    "Logout": "تسجيل الخروج",
+    "Welcome": "مرحبًا",
+    "Language": "اللغة",
+    "Change Language": "تغيير اللغة",
+    "LoginTitle": "تسجيل الدخول إلى لوحة التحكم",
+    "LoginDescription": "لوحة التحكم للمشرفين و المديرين",
+    "Theme": "السمة",
+    "Login": "تسجيل الدخول",
+    "ScoutDashboard": "لوحة التحكم للمشرفين و المديرين",
+    "LoginFailed": "تسجيل الدخول فشل. يرجى المحاولة مرة أخرى.",
+    "LoginAPIError": "خطأ في تسجيل الدخول:",
+    "WelcomeBack": "مرحبا بعودتك",
+    "MyFriend": "صديقي",
+    "LoggingIn": "يتم تسجيل الدخول...",
+    "RememberMeLater": "تذكرني لاحقا",
+    "EnterYourEmail": "أدخل بريدك الإلكتروني",
+    "EnterYourPassword": "أدخل كلمة المرور",
+    "Email": "البريد الإلكتروني",
+    "Password": "كلمة المرور",
+    "GetStarted": "ابدأ"
+}
