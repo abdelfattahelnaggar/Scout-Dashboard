@@ -67,26 +67,27 @@ export default function LoginPage() {
     toast.promise(mutateAsync(data), {
       loading: t("LoggingIn"),
       success: (response) => {
-        // !============== Store token in localStorage ==============
-        if (response?.data?.token) {
-          localStorage.setItem("token", response.data.token);
-        }
-        // !============== Store user data if available ==============
-        if (response?.data?.userDetails) {
-          localStorage.setItem(
-            "user",
-            JSON.stringify(response.data.userDetails)
-          );
-        }
+        const user = response?.data?.userDetails;
+        //  todo: check if user is owner or not (if owner make him login to the dashboard)
+        if (user.role === "OWNER") {
+          // !============== Store token in localStorage ==============
+          if (user?.token) {
+            localStorage.setItem("token", user.token);
+          }
+          // !============== Store user data if available ==============
+          if (user) {
+            localStorage.setItem("user", JSON.stringify(user));
+          }
 
-        // !============== Navigate to dashboard after successful login ==============
-        setTimeout(() => {
-          navigate("/");
-        }, 1000);
+          // !============== Navigate to dashboard after successful login ==============
+          setTimeout(() => {
+            navigate("/");
+          }, 1000);
 
-        return `${t("WelcomeBack")}, ${
-          response?.data?.userDetails?.fullName || t("MyFriend")
-        }!`;
+          return `${t("WelcomeBack")}, ${user?.fullName || t("MyFriend")}!`;
+        } else {
+          return `${t("shouldBeOwner")}`;
+        }
       },
       error: (error) => {
         // Handle different error scenarios

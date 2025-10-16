@@ -20,5 +20,6 @@
   "Identifier": "Identifier",
   "Password": "Password",
   "GetStarted": "Get Started",
-  "Active": "Active"
+  "Active": "Active",
+  "shouldBeOwner": "You should be an owner to login to the dashboard"
 }

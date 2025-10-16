@@ -8,38 +8,43 @@ export default function LanguageButton() {
   useEffect(() => {
     // Try to get saved language from localStorage
     const savedLang = localStorage.getItem("preferredLanguage");
+    const savedDirection = localStorage.getItem("direction");
     
-    // If there's a saved language and it's different from current, change to it
+    // If there's a saved language, use it
     if (savedLang && savedLang !== i18n.language) {
       i18n.changeLanguage(savedLang);
     }
     
-    // Set document attributes based on current language
-    const currentLang = i18n.language;
-    if (currentLang === "ar") {
-      document.documentElement.setAttribute("dir", "rtl");
-      document.documentElement.setAttribute("lang", "ar");
-    } else {
-      document.documentElement.setAttribute("dir", "ltr");
-      document.documentElement.setAttribute("lang", "en");
+    // Set document direction based on saved preference or current language
+    const currentLang = savedLang || i18n.language;
+    const direction = savedDirection || (currentLang === "ar" ? "rtl" : "ltr");
+    
+    document.documentElement.setAttribute("dir", direction);
+    document.documentElement.setAttribute("lang", currentLang);
+    
+    // Save to localStorage if not already saved
+    if (!savedDirection) {
+      localStorage.setItem("direction", direction);
+    }
+    if (!savedLang) {
+      localStorage.setItem("preferredLanguage", currentLang);
     }
   }, [i18n]);
 
   const handleChangeLanguage = () => {
     const newLang = i18n.language === "en" ? "ar" : "en";
+    const newDirection = newLang === "ar" ? "rtl" : "ltr";
+    
+    // Change language
     i18n.changeLanguage(newLang);
 
-    // Save language preference to localStorage
+    // Save both language and direction to localStorage
     localStorage.setItem("preferredLanguage", newLang);
+    localStorage.setItem("direction", newDirection);
 
-    // Change document direction based on language
-    if (newLang === "ar") {
-      document.documentElement.setAttribute("dir", "rtl");
-      document.documentElement.setAttribute("lang", "ar");
-    } else {
-      document.documentElement.setAttribute("dir", "ltr");
-      document.documentElement.setAttribute("lang", "en");
-    }
+    // Update document attributes
+    document.documentElement.setAttribute("dir", newDirection);
+    document.documentElement.setAttribute("lang", newLang);
   };
 
   const currentFlag = i18n.language === "en" ? <USFlag /> : <EgyptFlag />;
