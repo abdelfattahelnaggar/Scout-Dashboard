@@ -67,22 +67,22 @@ export default function LoginPage() {
     toast.promise(mutateAsync(data), {
       loading: t("LoggingIn"),
       success: (response) => {
-        const user = response?.data?.userDetails;
+        console.log(response)
+        const user = response?.data;
         //  todo: check if user is owner or not (if owner make him login to the dashboard)
-        if (user.role === "OWNER") {
+        if (user?.userDetails?.role === "OWNER") {
           // !============== Store token in localStorage ==============
           if (user?.token) {
             localStorage.setItem("token", user.token);
           }
           // !============== Store user data if available ==============
           if (user) {
-            localStorage.setItem("user", JSON.stringify(user));
+            localStorage.setItem("user", JSON.stringify(user?.userDetails));
           }
 
           // !============== Navigate to dashboard after successful login ==============
-          setTimeout(() => {
-            navigate("/");
-          }, 1000);
+
+          navigate("/");
 
           return `${t("WelcomeBack")}, ${user?.fullName || t("MyFriend")}!`;
         } else {
