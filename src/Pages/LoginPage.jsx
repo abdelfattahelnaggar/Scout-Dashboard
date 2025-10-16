@@ -121,7 +121,7 @@ export default function LoginPage() {
               >
                 <FieldGroup className="flex flex-col gap-3">
                   <section className="flex flex-col gap-6">
-                    {/* !============== Email Input ============== */}
+                    {/* !============== Identifier Input ============== */}
                     <Controller
                       name="identifier"
                       control={form.control}
@@ -130,8 +130,8 @@ export default function LoginPage() {
                           data-invalid={fieldState.invalid}
                           className="flex flex-col gap-2"
                         >
-                          <FieldLabel htmlFor="login-email">
-                            {t("Email")}
+                          <FieldLabel htmlFor="login-identifier">
+                            {t("Identifier")}
                           </FieldLabel>
                           <InputGroup className="dark:bg-input-color-dark bg-input-color h-12 border-none rounded-2xl">
                             <InputGroupAddon
@@ -143,10 +143,10 @@ export default function LoginPage() {
                             </InputGroupAddon>
                             <InputGroupInput
                               {...field}
-                              id="login-email"
-                              type="email"
+                              id="login-identifier"
+                              type="text"
                               aria-invalid={fieldState.invalid}
-                              placeholder={t("EnterYourEmail")}
+                              placeholder={t("EnterYourIdentifier")}
                               autoComplete="off"
                               className={`${
                                 i18n.language === "ar" ? "pr-0" : "pl-2"

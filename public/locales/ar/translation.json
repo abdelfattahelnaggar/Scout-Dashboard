@@ -15,9 +15,10 @@
     "MyFriend": "صديقي",
     "LoggingIn": "يتم تسجيل الدخول...",
     "RememberMeLater": "تذكرني لاحقا",
-    "EnterYourEmail": "أدخل بريدك الإلكتروني",
+    "EnterYourIdentifier": "أدخل بريدك الإلكتروني",
     "EnterYourPassword": "أدخل كلمة المرور",
-    "Email": "البريد الإلكتروني",
+    "Identifier": "البريد الإلكتروني",
     "Password": "كلمة المرور",
-    "GetStarted": "ابدأ"
+    "GetStarted": "ابدأ",
+    "Active": "نشط"
 }

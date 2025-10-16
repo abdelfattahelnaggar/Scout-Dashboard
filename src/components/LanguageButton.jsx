@@ -4,8 +4,17 @@ import { useEffect } from "react";
 export default function LanguageButton() {
   const { i18n, t } = useTranslation();
 
-  // Set initial direction on mount
+  // Set initial direction and language on mount
   useEffect(() => {
+    // Try to get saved language from localStorage
+    const savedLang = localStorage.getItem("preferredLanguage");
+    
+    // If there's a saved language and it's different from current, change to it
+    if (savedLang && savedLang !== i18n.language) {
+      i18n.changeLanguage(savedLang);
+    }
+    
+    // Set document attributes based on current language
     const currentLang = i18n.language;
     if (currentLang === "ar") {
       document.documentElement.setAttribute("dir", "rtl");
@@ -14,11 +23,14 @@ export default function LanguageButton() {
       document.documentElement.setAttribute("dir", "ltr");
       document.documentElement.setAttribute("lang", "en");
     }
-  }, [i18n.language]);
+  }, [i18n]);
 
   const handleChangeLanguage = () => {
     const newLang = i18n.language === "en" ? "ar" : "en";
     i18n.changeLanguage(newLang);
+
+    // Save language preference to localStorage
+    localStorage.setItem("preferredLanguage", newLang);
 
     // Change document direction based on language
     if (newLang === "ar") {
@@ -48,7 +60,13 @@ export default function LanguageButton() {
           tabIndex={0}
           role="button"
           onClick={handleChangeLanguage}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              handleChangeLanguage();
+            }
+          }}
           className="size-6 cursor-pointer flex items-center justify-center"
+          aria-label={`Switch to ${i18n.language === "en" ? "Arabic" : "English"}`}
         >
           {currentFlag}
         </span>
@@ -56,7 +74,6 @@ export default function LanguageButton() {
     </div>
   );
 }
-
 const USFlag = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"

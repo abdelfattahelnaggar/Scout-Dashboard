@@ -15,9 +15,10 @@
   "MyFriend": "my friend",
   "LoggingIn": "Logging in...",
   "RememberMeLater": "Remember me later",
-  "EnterYourEmail": "Enter your email",
+  "EnterYourIdentifier": "Enter your identifier",
   "EnterYourPassword": "Enter your password",
-  "Email": "Email",
+  "Identifier": "Identifier",
   "Password": "Password",
-  "GetStarted": "Get Started"
+  "GetStarted": "Get Started",
+  "Active": "Active"
 }
